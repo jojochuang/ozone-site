@@ -145,6 +145,15 @@ Protolock files are used to check backwards compatibility of protocol buffers be
 
 Update the Ozone SNAPSHOT version and national park tag on master with a pull request. The snapshot version should be set to one minor version after the current release. For example, if you are releasing 1.4.0, then the master branch's current version would be `1.4.0-SNAPSHOT`. Here you would increase it to `1.5.0-SNAPSHOT`. As part of this change, you will pick the [United States National Park](https://en.wikipedia.org/wiki/List_of_national_parks_of_the_United_States) to use for the next release of Ozone and set it in the project's top level pom at `<ozone.release>`. See [this pull request](https://github.com/apache/ozone/pull/2863) for an example.
 
+
+```bash title="Commit the Version Changes "
+mvn versions:set -DnewVersion=2.1.0-SNAPSHOT
+mvn versions:set-property -Dproperty=ozone.version -DnewVersion=2.1.0-SNAPSHOT
+mvn versions:set-property -Dproperty=ozone.release -DnewVersion="Joshua Tree”
+
+git commit -am "Update master branch version number."
+```
+
 :::note
 It is okay if there are commits that land between the `proto.lock` file updates and the SNAPSHOT version increase on the master branch, but they will not be part of the release unless they are manually cherry-picked after the release branch is created.
 :::
@@ -183,21 +192,10 @@ Assume all following commands are executed from within this repo with your relea
 
 Use the commands below or your IDE to replace `$VERSION-SNAPSHOT` with `$VERSION`.
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-<Tabs>
-<TabItem value="linux" label="Linux">
 ```bash title="Update the Versions"
-find . -name pom.xml -type f | xargs sed -i "s/$VERSION-SNAPSHOT/$VERSION/g"
+mvn versions:set -DnewVersion=$VERSION
+mvn versions:set-property -Dproperty=ozone.version -DnewVersion=$VERSION
 ```
-</TabItem>
-<TabItem value="mac" label="Mac">
-```bash title="Update the Versions (Mac)"
-find . -name pom.xml -type f -print0 | xargs -0 sed -i '' "s/$VERSION-SNAPSHOT/$VERSION/g"
-```
-</TabItem>
-</Tabs>
 
 ```bash title="Commit the Version Changes "
 git commit -am "Update Ozone version to $VERSION"
@@ -264,9 +262,11 @@ If the command fails on MacOS, you may need to do the following additional steps
 ### Build the Project
 
 Build the project to fetch dependencies.
+Use JDK8 to build.
+Use a Linux box so it produces Linux compatible native binaries.
 
   ```bash
-  mvn clean install -Dmaven.javadoc.skip=true -DskipTests -Psign,dist,src -Dtar -Dgpg.keyname="$CODESIGNINGKEY"
+  mvn clean install -Dmaven.javadoc.skip=true -DskipTests -Psign,dist,src -Dtar -Dgpg.keyname="$CODESIGNINGKEY -Drocks_tools_native"
   ```
 
 ### Create and Upload Maven Artifacts
@@ -319,7 +319,7 @@ Before uploading the artifacts, run some basic tests on them, similar to what ot
     - Verify each .tar.gz artifact:
 
       ```bash
-      gpg --verify <artifact>.tar.gz.asc <artifact>.tar.gz
+      for x in *.tar.gz; do gpg --verify $x.asc $x; done
       ```
 
 4. Verify checksums
