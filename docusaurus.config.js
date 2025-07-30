@@ -96,6 +96,11 @@ const config = {
       // Reuse the default parser.
       const result = await params.defaultParseFrontMatter(params);
 
+      // Skip validation for blog posts.
+      if (params.filePath.includes('/blog/')) {
+        return result;
+      }
+
       // Validate front matter against the schema.
       const schemaPath = './.github/resource/frontmatter.schema.json';
       const frontMatterSchema = require(schemaPath);
@@ -123,6 +128,14 @@ const config = {
           // TODO update this link when the new website's branch is merged.
           editUrl:
             'https://github.com/apache/ozone-site/tree/HDDS-9225-website-v2',
+        },
+        blog: {
+          path: 'blog',
+          routeBasePath: 'community/blogs',
+          blogTitle: 'Apache Ozone Blog',
+          blogDescription: 'The latest news, articles, and updates from the Apache Ozone community.',
+          blogSidebarTitle: 'Recent Posts',
+          authorsMapPath: 'authors.yml',
         },
         theme: {
           customCss: [
