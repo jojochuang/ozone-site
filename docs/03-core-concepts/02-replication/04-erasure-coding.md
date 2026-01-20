@@ -29,10 +29,10 @@ and several technical consideration, the most fitting data layout is striping mo
 The data striping layout is not new. The striping model already adapted by several other
 file systems(Ex: Quantcast File System, Hadoop Distributed File System etc) successfully before.
 
-For example, with the EC (6 data, 3 parity) scheme, the data chunks will be distributed to first 6 data nodes in order
+For example, with the EC (6 data, 3 parity) scheme, the data chunks will be distributed to first 6 Datanodes in order
 and then client generates the 3 parity chunks and transfer to remaining 3 nodes in order.
-These 9 chunks together we call as "Stripe". Next 6 chunks will be distributed to the same first 6 data nodes again
-and the parity to remaining 3 nodes. These 9 data nodes stored blocks together called as "BlockGroup".
+These 9 chunks together we call as "Stripe". Next 6 chunks will be distributed to the same first 6 Datanodes again
+and the parity to remaining 3 nodes. These 9 Datanodes stored blocks together called as "BlockGroup".
 
 If the application is continuing to write beyond the size of `6 * BLOCK_SIZE`, then client will request new block group from Ozone Manager.
 
@@ -42,7 +42,7 @@ The core logic of erasure coding writes are placed at Ozone client.
 When client creates the file, Ozone Manager allocates the block group(`d + p`)
 number of nodes from the pipeline provider and return the same to client.
 As data is coming in from the application, client will write first d number of chunks
-to d number of data nodes in block group. It will also cache the d number chunks
+to d number of Datanodes in block group. It will also cache the d number chunks
 to generate the parity chunks. Once parity chunks generated, it will transfer the
 same to the remaining p nodes in order. Once all blocks reached their configured sizes,
 client will request the new block group nodes.
@@ -57,7 +57,7 @@ This picture shows how the chunks will be laid out in data node blocks.
 
 ![EC Chunk Layout](EC-Chunk-Layout.png)
 
-Currently, the EC client re-used the data transfer end-points to transfer the data to data nodes.
+Currently, the EC client re-used the data transfer end-points to transfer the data to Datanodes.
 The XceiverClientGRPC client used for writing data and putBlock info.
 The Datanode side changes are minimal as we reused the same existing transfer protocols.
 The EC data block written at the Datanode is same as any other block in non-EC mode.

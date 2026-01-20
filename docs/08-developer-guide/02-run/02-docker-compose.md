@@ -72,7 +72,7 @@ graph TB
         recon["Recon<br/>Monitoring Service<br/>(Port: 9888)"]
         httpfs["HttpFS<br/>HTTP FileSystem<br/>(Port: 14000)"]
         
-        subgraph "Data Nodes"
+        subgraph "Datanodes"
             dn1["DataNode 1<br/>(Port: 19864, 9882)"]
             dnN["DataNode N<br/>(Port: 19864, 9882)"]
         end

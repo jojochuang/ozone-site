@@ -9,7 +9,7 @@ Ozone is a fault-tolerant, distributed object store optimized for Big Data workl
 Ozone achieves better scalability by separating namespace management from block space management.
 
 - The **Ozone Manager (OM)** daemon handles namespace-related tasks, like managing volumes, buckets, and keys.
-- The **Storage Container Manager (SCM)** manages the physical storage layer, including the data nodes and the blocks that form the data.
+- The **Storage Container Manager (SCM)** manages the physical storage layer, including the Datanodes and the blocks that form the data.
 
 ## Core Components
 

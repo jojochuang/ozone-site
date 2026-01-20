@@ -90,4 +90,4 @@ The Container Balancer can also be configured through the `ozone-site.xml` file.
 | `hdds.container.balancer.include.datanodes` | A comma-separated list of Datanode hostnames or IP addresses. Only the Datanodes specified in this list are balanced. | "" |
 | `hdds.container.balancer.exclude.datanodes` | A comma-separated list of Datanode hostnames or IP addresses. The Datanodes specified in this list are excluded from balancing. | "" |
 | `hdds.container.balancer.move.networkTopology.enable` | Whether to take network topology into account when selecting a target for a source. | false |
-| `hdds.container.balancer.trigger.du.before.move.enable` | Whether to send a command to all healthy and in-service data nodes to run `du` immediately before starting a balance iteration. | false |
+| `hdds.container.balancer.trigger.du.before.move.enable` | Whether to send a command to all healthy and in-service Datanodes to run `du` immediately before starting a balance iteration. | false |

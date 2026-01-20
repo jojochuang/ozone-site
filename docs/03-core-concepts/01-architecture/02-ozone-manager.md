@@ -32,7 +32,7 @@ Ozone Manager will use [Apache Ratis](https://ratis.apache.org/) (A Raft protoco
 
 - To write a key to Ozone, a client tells Ozone Manager that it would like to write a key into a bucket that lives inside a specific volume. Once Ozone Manager determines that you are allowed to write a key to the specified bucket, OM needs to allocate a block for the client to write data.
 
-- To allocate a block, Ozone Manager sends a request to Storage Container Manager (SCM); <!-- TODO: Link to Datanodes page when created --> SCM is the manager of data nodes. SCM picks three data nodes into which client can write data. SCM allocates the block and returns the block ID to Ozone Manager.
+- To allocate a block, Ozone Manager sends a request to Storage Container Manager (SCM); <!-- TODO: Link to Datanodes page when created --> SCM is the manager of Datanodes. SCM picks three Datanodes into which client can write data. SCM allocates the block and returns the block ID to Ozone Manager.
 
 - Ozone Manager records this block information in its metadata and returns the block and a <!-- TODO: Link to block token/security page when created --> block token (a security permission to write data to the block) to the client.
 
@@ -45,7 +45,7 @@ Ozone Manager will use [Apache Ratis](https://ratis.apache.org/) (A Raft protoco
 ![Ozone Manager Read Path](OzoneManager-ReadPath.png)
 
 - Key reads are simpler, the client requests the block list from the Ozone Manager
-- Ozone Manager will return the block list and block tokens which allows the client to read the data from data nodes.
+- Ozone Manager will return the block list and block tokens which allows the client to read the data from Datanodes.
 - Client connects to the data node and presents the block token and reads the data from the data node.
 
 ## Main Components of the Ozone Manager
